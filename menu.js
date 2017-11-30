@@ -1,10 +1,10 @@
 var menu = {
   "item1": {
-    "name":"Spl. Paneer Choley Bhathure",
+    "name":"Spl Paneer Choley Bhathure",
     "price" : 40
   },
   "item2": {
-    "name": "Spl. Paneer Choley Bhathure with lassi",
+    "name": "Spl Paneer Choley Bhathure with lassi",
     "price": 60
   },
   "item3": {
@@ -132,7 +132,7 @@ var menu = {
     "pricef": 100
   },
   "item33": {
-    "name": "BRYC spl. Noodles",
+    "name": "BRYC spl Noodles",
     "priceh": 80,
     "pricef": 120
   },
@@ -157,7 +157,7 @@ var menu = {
     "pricef": 120
   },
   "item38": {
-    "name": "BRYC spl. Fried Rice",
+    "name": "BRYC spl Fried Rice",
     "priceh": 90,
     "pricef": 130
   },
@@ -329,7 +329,7 @@ var menu = {
     "pricef": 100
   },
   "item76": {
-    "name": "BRYC spl. Veg Pulao",
+    "name": "BRYC spl Veg Pulao",
     "priceh": 80,
     "pricef": 120
   },
@@ -388,7 +388,7 @@ var menu = {
     "contents": "1 Paneer + 1 dal Makhni + 4 roti + Jeera rice + raita + salad + Achaar,papd,chutney "
   },
   "item90": {
-    "name": "BRYC spl. Thali",
+    "name": "BRYC spl Thali",
     "price": 250,
     "contents": "2 chur chur naan + Shahi Paneer + 1 dal Makhni + Jeera rice + raita + salad + Achaar,papd,chutney"
   }

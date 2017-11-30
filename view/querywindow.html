@@ -1,0 +1,72 @@
+<! doc html>
+ <html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+      query window
+    </title>
+  </head>
+  <body>
+    <div id = "outerdiv" class = "container-fluid">
+    <div id = "dailysell" class = "container-fluid">
+      <form id = "dailysellform">
+        Date:
+        <input type = "number" name = "querydate" placeholder="DDMMYYYY"><br>
+        <input type = "submit" value = "query"><br>
+      </form>
+    </div>
+    <div id = "queryusingbill" class = "container-fluid">
+      <form id = "queryusingbillform">
+        billid:
+        <input type = "text" name = "billid"><br>
+        <input type = "submit" value = "query"><br>
+      </form>
+    </div>
+    <div id = "queryusingcustomername" class = "container-fluid">
+      <form id = "queryusingcustomernameform">
+        customername:
+        <input type = "text" name = "customename"><br>
+        <input type = "submit" value = "query"><br>
+      </form>
+    </div>
+    <div id = "queryusingcontact" class = "container-fluid">
+      <form id = "queryusingcontactform">
+        contactno:
+        <input type = "text" name = "contactno"><br>
+        <input type = "submit" value = "query"><br>
+      </form>
+    </div>
+  </div>
+  <div class="container" style = "width:2000px">
+    	<div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">Results</h3>
+					</div>
+					<div class="panel-body">
+						<input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filter Developers" />
+					</div>
+					<table class="table table-hover" id="results" style = "width:100%">
+						<thead>
+							<tr>
+								<th>item name</th>
+								<th>quantity sold</th>
+								<th>Amount</th>
+							</tr>
+						</thead>
+						<tbody id = "resultinsert">
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			</div>
+		</div>
+	</div>
+  <script> require('./../renderer/querywindow.js') </script>
+  <link rel="stylesheet" href="./../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./../stylesheets/querywindow.css">
+  </body>
+  </html>

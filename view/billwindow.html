@@ -1,0 +1,94 @@
+<! doc html>
+  <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>Bill Window </title>
+      </head>
+      <body>
+        <div id = "formdiv" class  = "container-fluid">
+        <!--form id = "additem">
+          Item code: <br>
+          <input id = "item" type = "number" name = "Itemcode"><br>
+          Quantity: <br>
+          <input type = "number" name = "Quantity"><br>
+          Plate : <br>
+          <input type = "text" name = "plate"><br>
+          <br>
+          <input type = "submit" value="Add" id = "additem.submit">
+        </form-->
+        <div class="container">
+    	<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="panel panel-login">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-6 col-xs-offset-3" style = "text-align: center; ">
+								<a href="#" class="active" id="login-form-link">Add item</a>
+							</div>
+						</div>
+						<hr>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-12">
+								<form id="additem" role="form" style="display: block;">
+									<div class="form-group">
+										<input type="number" name="item-code" tabindex="1" class="form-control" placeholder="item-code" value="">
+									</div>
+									<div class="form-group">
+										<input type="number" name="quantity" tabindex="2" class="form-control" placeholder="quantity">
+									</div>
+									<div class="form-group">
+										<input type="text" name="Plate"  tabindex="3" class="form-control" placeholder="Plate">
+									</div>
+									<div class="form-group">
+										<div class="row">
+											<div class="col-sm-6 col-sm-offset-3">
+												<input type="submit" name="submit" id="additem.submit" tabindex="4" class="form-control btn btn-additem" value="Add">
+											</div>
+										</div>
+									</div>
+								</form>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+        <div>
+        <table style="width:100%" id = "bill">
+            <tr>
+                <th >Itemname</th>
+                <th >Plate</th>
+                <th >Quantity</th>
+                <th >Price</th>
+                <th ></th>
+            </tr>
+            <tr>
+              <th>Total</th>
+              <th></th>
+              <th></th>
+              <th id ="total" >0</th>
+        </table>
+        <br>
+        <form id = "submittodb">
+          <div class="form-group">
+          Name  : <input id = "customername" type = "text" name = "name" placeholder="customerName"><br>
+        </div>
+        <div class="form-group">
+          phone :<input id = "contactno" type = "text" name = "phone" placeholder="Phone no."><br>
+        </div>
+        <div class="form-group">
+          <input type = "submit" value="Add" id = "submittodb.submit" class="form-control btn btn-submit">
+        </div>
+        </form>
+        <script>
+           require('./../renderer/billwindow.js')
+        </script>
+        <link rel="stylesheet" href="./../node_modules/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./../stylesheets/billwindow.css">
+
+      </body>
+  </html>

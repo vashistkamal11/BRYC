@@ -19,5 +19,12 @@
   "homepage": "https://github.com/vashistkamal11/BRYC#readme",
   "devDependencies": {
     "electron": "1.7.9"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "mongojs": "^2.4.1",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1",
+    "time": "^0.12.0"
   }
 }
