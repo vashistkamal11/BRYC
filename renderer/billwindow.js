@@ -1,136 +1,139 @@
 const electron = require("electron")
 const ipc = electron.ipcRenderer
-const menu = require('./../menu.js').menu
 const mongojs = require("mongojs")
+const menufunctions = require('./../menu.js')
 
-bill = document.getElementById('bill');
-let warningflag = 0;
-// warning for invald values
 
-function invalidvaluewarning(){
-  if(warningflag == 0){
-    let warn = document.createElement("warning");
-    warn.id = "warning"
-    warn.innerHTML = "Wrong Values entered";
-    let place = document.getElementById('additem.sbutton');
-    let form  = document.getElementById('additem')
-    form.insertBefore(warn, place)
-    let nextline = document.createElement("br");
-    form.insertBefore(nextline, place)
-    warningflag = 1;
-    console.log(warn.outerHTML)
+window.onload = function(){
+  bill = document.getElementById('bill');
+  menuobject = {}; // for storing food items in form of menu i.e. category wise
+  fooditems = {};// for storing list of food itrms objects
+  menufunctions.menuBuilder(menuobject,createMenu);
+  menufunctions.getFoodItems(fooditems);
+  document.getElementById('discount').addEventListener('change', discount);
+  document.getElementById('submittodb').addEventListener('submit', submitformfunction);
+}
+// function to createMenu
+function createMenu(menuarg){
+  for(key in menuarg){
+    let dv = document.createElement('div');
+    dv.className = "arrow-down";
+    let idv = document.createElement('div');
+    idv.className = "arrow-down-inner";
+    dv.appendChild(idv);
+    let tablist=document.getElementById('tablist');
+    let item = document.createElement('li');
+    item.className  = "tab fancyTab ";
+    item.appendChild(dv)
+    let write = document.createElement('a');
+    write.innerHTML = key;
+    write.id = "tab";
+    write.addEventListener('click' , changeTab);
+    item.appendChild(write);
+    let adv = document.createElement('div');
+    adv.className = "whiteBlock";
+    item.appendChild(adv);
+    tablist.appendChild(item);
   }
 }
-
-// function for transferring new item to bill
-additem.addEventListener('submit', function(event){
-
-    event.preventDefault();
-
-    let cnt = 0;
-    let elem = document.getElementById('additem').elements
-
-    let newrow = bill.insertRow(bill.rows.length-1);
-    let values =[] // array for storing values sent
-    let valuesref =[] // for keeping reference to clean up later
-
-    for(let i=0;i<elem.length;i+=1){
-        let tmp = elem[i];
-        if(tmp.type === "number" || tmp.type === "text"){
-          values[cnt] = tmp.value;
-          valuesref[cnt]=tmp
-          cnt+=1;
-        }
-    }
-    // validating data here
-    if(values[0]=="" || values[1]==""){
-      invalidvaluewarning();
-      return;
-    }
-    if((values[2] == "")){
-      if(menu["item"+values[0]].price == null){
-        invalidvaluewarning();
-        return;
-      }
-    }
-    else{
-      if(values[2]=="h" || values[2]=="f"){
-        if(menu["item"+values[0]].price != null){
-         invalidvaluewarning();
-         return;
-        }
-      }
-      else{
-        invalidvaluewarning();
-        return;
-      }
-    }
-    // in case same item ordered again
-    for(let i=1;i<(bill.rows.length-1);i++){
-      row = bill.rows[i]
-      for(let j=0;j<row.cells.length;j++){
-        if(j==0){
-        cell = row.cells[j]
-        ncell = row.cells[j+1]
-        if((cell.innerHTML == menu["item"+values[0]].name) && ((ncell.innerHTML == "Half" && values[2]=="h")||(ncell.innerHTML == "Full" && values[2]=="f")||(ncell.innerHTML=="----"))){
-
-          let quantity = row.cells[2];
-          let price = row.cells[3];
-          let total = document.getElementById('total');
-          total.innerHTML = parseInt(total.innerHTML) - parseInt(row.cells[3].innerHTML);
-          row.cells[2].innerHTML = parseInt(row.cells[2].innerHTML) + parseInt(values[1]);
-          row.cells[3].innerHTML = row.cells[2].innerHTML*(menu["item"+values[0]]["price" + values[2]]);
-          total.innerHTML = parseInt(total.innerHTML)+ parseInt(row.cells[3].innerHTML);
-
-          for(let i=0;i<valuesref.length;i+=1)
-            valuesref[i].value = null
-          if(warningflag == 1){
-          let warn = document.getElementById('warning')
-          warn.parentNode.removeChild(warn)
-          warningflag = 0;
-          }
-
-          return;
-        }
-      }
-    }
+// function to remove item from bill
+function removeitemfrombill(event){
+  row = event.target.parentNode.parentNode
+  document.getElementById("total").innerHTML = parseInt(document.getElementById("total").innerHTML) - parseInt(row.cells[3].innerHTML);
+  row.remove();
+}
+//discount
+function discount(event){
+  let dis = document.getElementById('discount').value;
+  let ttl = document.getElementById('total');
+  ttl.innerHTML = parseInt(ttl.innerHTML) - parseInt(dis);
+}
+// click function for tabs
+function changeTab(event){
+  let tabs = document.getElementsByClassName('tab');
+  for(i=0; i <tabs.length;i++){
+    tabs[i].classList.remove("active");
   }
-  // adding data to table
-    let newcell = newrow.insertCell(0);
-    newcell.appendChild(document.createTextNode(menu["item"+values[0]].name));
+  event.target.parentNode.classList+= " active";
+  let selelectedtab = event.target.innerHTML;
+  let contenttab = document.getElementById('myTabContent');
+  let contents = menuobject[selelectedtab];
+  contenttab.innerHTML = "";
+  for(key in contents){
+    let newbutton = document.createElement('button');
+    newbutton.className = "col-lg-2 col-md-2 col-xs-4 btn contentbtn";
+    newbutton.innerHTML = key;
+    newbutton.addEventListener('click',foodbtnclick);
+    contenttab.appendChild(newbutton);
+  }
+}
+//onchange  event for dropdownlist or quantitychange
+function plateorquantitychange(event){
+  let row = event.target.parentNode.parentNode;
+  let fooditemname  = row.cells[0].innerHTML;
+  let fooditemquantity = row.cells[2].firstChild.value;
+  let oldprice = row.cells[3].innerHTML;
+  if(fooditems[fooditemname].kind == 1 ){
+    let fooditemplate = row.cells[1].firstChild.value;
+    let fooditemprice = (parseInt(fooditemquantity) * parseInt(fooditems[fooditemname]["price"+fooditemplate]));
+    row.cells[3].innerHTML = fooditemprice;
+  }
+  else{
+    let fooditemprice = (parseInt(fooditemquantity) * parseInt(fooditems[fooditemname]["price"]));
+    row.cells[3].innerHTML = fooditemprice;
+  }
+  let ttl = document.getElementById("total");
+  ttl.innerHTML = parseInt(ttl.innerHTML) - parseInt(oldprice) + parseInt(row.cells[3].innerHTML);
+}
+//onclick event for food-items
+function foodbtnclick(event){
+  let fooditemname = event.target.innerHTML;
+  let newrow = bill.insertRow(bill.rows.length-1);
+  let newprice =null;
+  newrow.className += "table-row";
+  let newcell = newrow.insertCell(0);
+  newcell.innerHTML = fooditemname;
 
-    newcell = newrow.insertCell(1);
-    if(values[2]=="h")
-    newcell.appendChild(document.createTextNode("Half"));
-    else if(values[2]=="f")
-    newcell.appendChild(document.createTextNode("Full"));
-    else
-    newcell.appendChild(document.createTextNode("----"));
+  newcell = newrow.insertCell(1);
+  let newdropdownlist = document.createElement('select');
+  if(fooditems[fooditemname].kind == 1){
+  let newoption = document.createElement('option');
+  newoption.value = "half";
+  newoption.innerHTML = "half";
+  newdropdownlist.appendChild(newoption);
+  newoption = document.createElement('option');
+  newoption.value = "full";
+  newoption.innerHTML = "full";
+  newdropdownlist.appendChild(newoption);
+  newdropdownlist.addEventListener('change', plateorquantitychange);
+  newprice = fooditems[fooditemname].pricehalf;
+  }
+  else{
+  newprice = fooditems[fooditemname].price;
+  }
+  newcell.appendChild(newdropdownlist);
+  newcell = newrow.insertCell(2);
+  let newnumberinput = document.createElement('input');
+  newnumberinput.type = "number";
+  newnumberinput.value = 1;
+  newnumberinput.addEventListener('change' , plateorquantitychange);
+  newcell.appendChild(newnumberinput);
 
-    newcell = newrow.insertCell(2);
-    newcell.appendChild(document.createTextNode(values[1]));
+  newcell = newrow.insertCell(3);
+  newcell.innerHTML = newprice;
 
-    newcell = newrow.insertCell(3);
-    newcell.appendChild(document.createTextNode(values[1]*(menu["item"+values[0]]["price" + values[2] ])))
-    let total = document.getElementById('total')
-    total.innerHTML = parseInt(total.innerHTML) + parseInt(newcell.innerHTML)
-    btnclose = document.createElement("button")
-    btnclose.innerHTML = "remove"
-    btnclose.id = "remove"
-    newcell = newrow.insertCell(4);
-    newcell.appendChild(btnclose)
-// resetting values of form ,remove warning
-    for(let i=0;i<valuesref.length;i+=1)
-      valuesref[i].value = null
-    if(warningflag == 1){
-    let warn = document.getElementById('warning')
-    warn.parentNode.removeChild(warn)
-    warningflag = 0;
-    }
-})
+  newcell = newrow.insertCell(4);
+  let removebtn = document.createElement('button');
+  removebtn.className+=" btn";
+  removebtn.addEventListener('click' , removeitemfrombill);
+  removebtn.innerHTML = 'remove';
+  newcell.appendChild(removebtn);
 
-let submitform = document.getElementById('submittodb')
-submitform.addEventListener('submit', function(event){
+  let ttl = document.getElementById('total');
+  ttl.innerHTML = parseInt(ttl.innerHTML) + parseInt(newprice);
+}
+
+function submitformfunction(event){
   event.preventDefault();
   // adding bill
   let dbb = mongojs('127.0.0.1/bills', ['bills'])
@@ -140,8 +143,8 @@ submitform.addEventListener('submit', function(event){
     let element = {};
     let row = bill.rows[i];
     element.name = row.cells[0].innerHTML;
-    element.plate = row.cells[1].innerHTML;
-    element.quantity = row.cells[2].innerHTML;
+    element.plate = row.cells[1].firstChild.value;
+    element.quantity = row.cells[2].firstChild.value;
     element.price = row.cells[3].innerHTML;
     elements[i-1] = element
   }
@@ -150,15 +153,15 @@ submitform.addEventListener('submit', function(event){
   var today = new Date();
 
   exportbill.id = "bryc" + today.getDate() + today.getHours()+ today.getMonth() + today.getMinutes() + today.getFullYear() + today.getSeconds();
-  exportbill.customerName = document.getElementById('customername').innerHTML;
-  exportbill.contactinfo = document.getElementById('contactno').innerHTML;
+  exportbill.customerName = document.getElementById('customername').value;
+  exportbill.contactinfo = document.getElementById('contactno').value;
   exportbill.elements = elements
+  exportbill.discount = document.getElementById('discount').value;
   dbb.bills.insert(exportbill , (err, records)=>{
     if(err){
       alert(err.messgae+"Error");
       return;
     }
-    alert('operation successfull');
   })
   // adding to dailysell
   let exporttodailysell = {};
@@ -192,18 +195,18 @@ submitform.addEventListener('submit', function(event){
        newdailysell.totalsale = parseInt(newdailysell.totalsale) + parseInt(elements[i].price);
     }
     if(findflag == 1){
-      console.log("found");
       dbds.dailysell.update({date:""+today.getDate()+today.getMonth()+today.getFullYear()}, newdailysell);
     }else {
-      console.log("new");
       dbds.dailysell.insert(newdailysell , (err, records)=>{
         if(err){
           alert("error submiting data to dailysell" + err);
           return;
         }
+        else{
+          alert("operation successfull");
+          location.reload();
+        }
       })
     }
-    location.reload()
   })
-  //location.reload()
-})
+}

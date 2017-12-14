@@ -1,0 +1,85 @@
+<! doc html>
+   <head>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+     <title>
+       Menu window
+    </title>
+    <body>
+      <table class = "table col-lg-10 col-xs-12 col-md-12"  id = "food-items">
+          <tr>
+              <th >Itemname</th>
+              <th>Category</th>
+              <th >Price</th>
+              <th ><button class = 'btn btn-primary' id = "additem">Add item</button></th>
+          </tr>
+      </table>
+<div id="additemdialog" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Add food-item to menu</h4>
+            </div>
+            <div class="modal-body" >
+                <button id = "kind1" class = "btn btn-link " style="margin-right : 20px;">Kind1</button>
+                <button id = "kind2" class = "btn btn-link " style="margin-left : 20px">Kind2</button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="additemdialogkind1" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">kind1 has full and half plate options</h4>
+            </div>
+            <div class="modal-body" >
+              <input type = "text" id = "fooditemnamekind1" class = "form-control" placeholder="food-item name" style = "width:80% ;height:30px;margin-top:10px;"></input>
+              <input type = "text" id = "categorykind1" class = "form-control" placeholder= "category" style= "width:80% ;height:30px;margin-top:10px;"></input>
+              <input type = "number" id = "pricehalf" class = "form-control" placeholder="Pricehalf" style= "width:80% ;height:30px;margin-top:10px;"></input>
+              <input type = "number" id = "pricefull" class = "form-control" placeholder="Pricefull" style= "width:80% ;height:30px;margin-top:10px;"></input>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type = "button" id = "savekind1" class = "btn btn-default">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="additemdialogkind2" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Kind2 fooditem don't have plate option</h4>
+            </div>
+            <div class="modal-body" >
+              <input type = "text" id = "fooditemnamekind2" class = "form-control" placeholder="food-item name" style = "width:80% ;height:30px;margin-top:10px;"></input>
+              <input type = "text" id = "categorykind2" class = "form-control" placeholder="Category" style = "width:80% ;height:30px;margin-top:10px;"></input>
+              <input type = "text" id = "price" class = "form-control" placeholder="Price" style = "width:80% ;height:30px;margin-top:10px;"></input>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type = "button" id = "savekind2" class = "btn btn-default">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+      <link rel="stylesheet" href="./../node_modules/bootstrap/dist/css/bootstrap.min.css">
+      <script>
+        let $ = require('jquery');
+        let jQuery = require('jquery');
+      </script>
+      <script src = "./../node_modules/jquery-ui-/jquery-ui.min.js"></script>
+      <script src="./../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+      <script>
+         require('./../renderer/menuwindow.js')
+      </script>
+
+    </body>

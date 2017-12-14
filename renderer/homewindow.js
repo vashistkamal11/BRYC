@@ -1,6 +1,6 @@
 const electron = require('electron')
 const ipc = electron.ipcRenderer
-document.getElementById("options").style.padding = "300px 300px "
+document.getElementById("options").style.padding = "100px 300px "
 
 
 document.getElementById("newbill").addEventListener("click", (event)=>{
@@ -8,6 +8,9 @@ document.getElementById("newbill").addEventListener("click", (event)=>{
 })
 
 document.getElementById("query").addEventListener("click",(event)=>{
-  console.log('kamal')
   ipc.send('newquerywindow')
+})
+
+document.getElementById("menu").addEventListener("click" , (event)=>{
+  ipc.send('newmenuwindow');
 })

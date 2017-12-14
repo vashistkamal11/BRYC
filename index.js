@@ -16,9 +16,13 @@ function newwindow(type){
 // new window events
 ipc.on('newbillwindow', ()=>{
   let bill = "billwindow"
-  newwindow(bill)
+  newwindow(bill);
 })
 
 ipc.on('newquerywindow',()=>{
-  newwindow("querywindow")
+  newwindow("querywindow");
+})
+
+ipc.on('newmenuwindow' , ()=>{
+  newwindow("menuwindow");
 })
