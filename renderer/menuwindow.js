@@ -4,7 +4,9 @@ const mongojs = require("mongojs")
 const menufunctions = require('./../menu.js')
 
 $(document).ready(function() {
-
+  let today = new Date();
+  console.log(today.getTime());
+  console.log(today.getDate());
   fooditemstable = document.getElementById('food-items');
   dbmenu = mongojs('127.0.0.1/menu', ['menu']);
   foodItems = {};

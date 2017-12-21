@@ -2,16 +2,23 @@ const electron = require("electron")
 const ipc = electron.ipcRenderer
 const mongojs = require("mongojs")
 const menufunctions = require('./../menu.js')
+const remote = electron.remote;
 
 
 window.onload = function(){
+  console.log(remote.getCurrentWindow().getTitle());
   bill = document.getElementById('bill');
   menuobject = {}; // for storing food items in form of menu i.e. category wise
-  fooditems = {};// for storing list of food itrms objects
+  fooditems = {};// for storing list of food items objects
   menufunctions.menuBuilder(menuobject,createMenu);
   menufunctions.getFoodItems(fooditems);
   document.getElementById('discount').addEventListener('change', discount);
   document.getElementById('submittodb').addEventListener('submit', submitformfunction);
+
+   dbb = mongojs('127.0.0.1/bills', ['bills']);
+   dbds = mongojs('127.0.0.1/dailysell', ['dailysell']);
+   dbsafes = mongojs('127.0.0.1/safes', ['safes']);
+   dbtransactions = mongojs('127.0.0.1/transactions' , ['transactions']);
 }
 // function to createMenu
 function createMenu(menuarg){
@@ -134,10 +141,9 @@ function foodbtnclick(event){
 }
 
 function submitformfunction(event){
+  console.log("sd");
   event.preventDefault();
   // adding bill
-  let dbb = mongojs('127.0.0.1/bills', ['bills'])
-  let dbds = mongojs('127.0.0.1/dailysell', ['dailysell'])
   let elements = [];
   for(let i=0;i<(bill.rows.length-1);i++){
     let element = {};
@@ -155,14 +161,14 @@ function submitformfunction(event){
   exportbill.id = "bryc" + today.getDate() + today.getHours()+ today.getMonth() + today.getMinutes() + today.getFullYear() + today.getSeconds();
   exportbill.customerName = document.getElementById('customername').value;
   exportbill.contactinfo = document.getElementById('contactno').value;
-  exportbill.elements = elements
+  exportbill.elements = elements;
   exportbill.discount = document.getElementById('discount').value;
+  exportbill.title = remote.getCurrentWindow().getTitle();
   dbb.bills.insert(exportbill , (err, records)=>{
     if(err){
       alert(err.messgae+"Error");
       return;
     }
-  })
   // adding to dailysell
   let exporttodailysell = {};
   let newdailysell ={};
@@ -194,19 +200,47 @@ function submitformfunction(event){
        }
        newdailysell.totalsale = parseInt(newdailysell.totalsale) + parseInt(elements[i].price);
     }
+    let transaction = {
+      "safetype" : "large",
+      "amount" : document.getElementById("total").innerHTML,
+      "description" : "from bill" + exportbill.id
+    }
     if(findflag == 1){
-      dbds.dailysell.update({date:""+today.getDate()+today.getMonth()+today.getFullYear()}, newdailysell);
+      dbds.dailysell.update({date:""+today.getDate()+today.getMonth()+today.getFullYear()}, newdailysell , (err,msg)=>{
+        if(err){
+          alert(err);
+          return;
+        }
+        addtosafe(transaction);
+      });
     }else {
-      dbds.dailysell.insert(newdailysell , (err, records)=>{
+      dbds.dailysell.insert(newdailysell , (err, msg)=>{
         if(err){
           alert("error submiting data to dailysell" + err);
           return;
         }
-        else{
-          alert("operation successfull");
-          location.reload();
-        }
+        addtosafe(transaction);
       })
     }
+  })
+})
+}
+// insert in largesafe and transaction
+
+var addtosafe = (transaction)=>{
+  dbsafes.safes.update({"type":"large"} , {$inc : {"amount" : parseInt(document.getElementById("total").innerHTML)}} , {upsert:true} , (err,msg)=>{
+    if(err){
+      alert(err);
+      return;
+    }
+    console.log("safe updated");
+    dbtransactions.transactions.insert(transaction , (err,msg)=>{
+      if(err){
+        alert(err);
+        return;
+      }
+      alert(msg);
+      location.reload();
+    })
   })
 }

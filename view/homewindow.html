@@ -5,10 +5,10 @@
             BRYC restaurnat manager
           </title>
         </head>
-        <div style = "width :100% ; height :300px ; background-color:#C6D2D7;  border-color: #59B2E6; ">
+        <div  style = "height :300px ; background-color:#C6D2D7;  border-color: #59B2E6;">
         </div>
         <body>
-          <div id = "options">
+          <div class = "col-lg-3 col-md-offset-2 col-lg-offset-1 col-lg-3 col-md-offset-2" id = "options" style="width:200px">
             <button type = "button" class = "btn btn-link" id ="newbill" >
               New bill
             </button><br>
@@ -19,7 +19,12 @@
             <br>
             <button class = "btn btn-link" id = "smallsafebutton">Small Safe </button><br>
             <button class = "btn btn-link" id = "largesafebutton">Large Safe</button>
-
+          </div>
+          <div id = "tables" class = "col-lg-2 col-md-2 col-xs-6 col-lg-offset-1 col-md-offset-1">
+          </div>
+          <div id = "packing" class = "col-lg-2 col-md-2 col-xs-6 col-lg-offset-1 col-md-offset-1 col-xs-offset-1">
+          <button class = "btn btn-link" id = "packingbtn">packing</button><br>
+          <button class = "btn btn-link" id = "deliverybtn">delivery</button>
           </div>
           <div id="smallsafedialog" class="modal fade">
               <div class="modal-dialog">
@@ -67,5 +72,7 @@
           <script src="./../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
           <script> require("./../renderer/homewindow.js") </script>
           <link rel="stylesheet" href="./../node_modules/bootstrap/dist/css/bootstrap.min.css">
+          <link rel="stylesheet" href="./../stylesheets/homewindow.css">
+
         <body>
       </html>

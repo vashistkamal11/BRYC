@@ -9,20 +9,19 @@ app.on('ready', ()=> {
     win.loadURL(`file://${__dirname}/view/homewindow.html`)
 })
 
-function newwindow(type){
-  let window = new BrowserWindow({width:600,height:800})
+function newwindow(type, windowtitle){
+  let window = new BrowserWindow({width:600,height:800,title:windowtitle})
   window.loadURL(`file://${__dirname}/view/${type}.html`)
 }
 // new window events
-ipc.on('newbillwindow', ()=>{
-  let bill = "billwindow"
-  newwindow(bill);
+ipc.on('newbillwindow', (event, title)=>{
+  newwindow("billwindow" , title);
 })
 
-ipc.on('newquerywindow',()=>{
+ipc.on('newquerywindow',(event)=>{
   newwindow("querywindow");
 })
 
-ipc.on('newmenuwindow' , ()=>{
+ipc.on('newmenuwindow' , (event)=>{
   newwindow("menuwindow");
 })
