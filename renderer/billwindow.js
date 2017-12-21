@@ -6,7 +6,6 @@ const remote = electron.remote;
 
 
 window.onload = function(){
-  console.log(remote.getCurrentWindow().getTitle());
   bill = document.getElementById('bill');
   menuobject = {}; // for storing food items in form of menu i.e. category wise
   fooditems = {};// for storing list of food items objects
@@ -141,7 +140,6 @@ function foodbtnclick(event){
 }
 
 function submitformfunction(event){
-  console.log("sd");
   event.preventDefault();
   // adding bill
   let elements = [];
@@ -233,7 +231,6 @@ var addtosafe = (transaction)=>{
       alert(err);
       return;
     }
-    console.log("safe updated");
     dbtransactions.transactions.insert(transaction , (err,msg)=>{
       if(err){
         alert(err);

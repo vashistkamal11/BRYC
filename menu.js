@@ -1,5 +1,4 @@
 const electron = require("electron")
-const ipc = electron.ipcRenderer
 const mongojs = require("mongojs")
 
 var  FoodItemBuilder = function(kind  , name , price , category , inventory){

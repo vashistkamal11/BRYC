@@ -2,9 +2,9 @@ const electron = require('electron')
 const ipc = electron.ipcRenderer
 const mongojs = require("mongojs")
 const menufunctions = require('./../menu.js')
+const users = require('./../users.js')
 
 $(document).ready(function(){
-//  document.getElementById("options").style.padding = "100px 150px ";
   addbuttons(8);
   dbtransactions = mongojs('127.0.0.1/transactions' , ['transactions']);
   dbsafes = mongojs('127.0.0.1/safes' , ['safes']);
@@ -88,13 +88,14 @@ var smallSafeTransaction = ()=>{
 var largeSafeTransaction = ()=>{
   let amount = document.getElementById("largesafetransactionamount").value;
   let description = document.getElementById("largesafetransactiondescription").value;
-
+  
   let transaction = {
     "safetype" : "large",
     "amount" : amount,
-    "description" : description
+    "description" : description,
+    "when" : new Date()
   }
-    dbsafes.safes.update({"type":"large"}, {$inc:{"amount" : parseInt(amount)}} ,{upsert:true}, (err,records)=>{
+    dbsafes.safes.update({"type":"large"}, {$inc:{"amount" : parseInt(amount)}} ,{upsert:true}, (err,msg)=>{
 
       if(err){
         alert(err);

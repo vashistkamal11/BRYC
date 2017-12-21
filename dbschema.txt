@@ -1,0 +1,7 @@
+mongo
+   -menu // for keeping food items
+   -users
+   -safes // keeping amount of safes
+   -dailysell
+   -transactions
+   -bills
