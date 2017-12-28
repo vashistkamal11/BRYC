@@ -5,22 +5,32 @@
             BRYC restaurnat manager
           </title>
         </head>
-        <div  style = "height :300px ; background-color:#C6D2D7;  border-color: #59B2E6;">
+        <div style = "height :700px ; background-color:#112;  border-color: #59B2E6; resize: vertical; overflow:auto;width:100%">
+        <img id = "img1" src = "/home/vashist/Desktop/bryc/BRYC/resources/1.jpeg" style = "height:100%; width:100%">
         </div>
-        <body>
-          <div class = "col-lg-3 col-md-offset-2 col-lg-offset-1 col-lg-3 col-md-offset-2" id = "options" style="width:200px">
-            <button type = "button" class = "btn btn-link" id ="newbill" >
+        <body style = "background-color: #112">
+          <div class = "col-lg-3  col-md-3 col-xs-6" id = "options" style="width:200px">
+            <ul>
+            <li><button type = "button" class = "btn btn-link" id ="newbill" >
               New bill
-            </button><br>
-            <button type = "button" class = "btn btn-link" id = "query">
+            </button></li>
+            <li><button type = "button" class = "btn btn-link" id = "query">
               query
-            </button><br>
-            <button class = "btn btn-link" id = "menu">menu</button>
-            <br>
-            <button class = "btn btn-link" id = "smallsafebutton">Small Safe </button><br>
-            <button class = "btn btn-link" id = "largesafebutton">Large Safe</button>
+            </button></li>
+            <li><button class = "btn btn-link" id = "menu">menu</button></li>
+            <li><button class = "btn btn-link" id = "smallsafebutton">Small Safe </button></li>
+            <li><button class = "btn btn-link" id = "largesafebutton">Large Safe</button></li>
+            <li><button class = "btn btn-link" id = "settingsbutton">Settings</button>
+                  <ul>
+                    <li><button class ="btn btn-link" id = "userbtn">Users</button></li>
+                    <li><button class ="btn btn-link" id = "purposebtn">Purpose</button></li>
+                    <li><button class ="btn btn-link" id = "tablesbtn">Tables</button> </li>
+                  </ul>
+                </li>
+            </ul>
+
           </div>
-          <div id = "tables" class = "col-lg-2 col-md-2 col-xs-6 col-lg-offset-1 col-md-offset-1">
+          <div id = "tables" class = "col-lg-2 col-md-2 col-xs-6 col-lg-offset-2 col-md-offset-2">
           </div>
           <div id = "packing" class = "col-lg-2 col-md-2 col-xs-6 col-lg-offset-1 col-md-offset-1 col-xs-offset-1">
           <button class = "btn btn-link" id = "packingbtn">packing</button><br>
@@ -36,6 +46,9 @@
                       <div class="modal-body" >
                           <div id = "smallsafeamount"></div>
                           <input type = "number" class = "form-control" id = "smallsafetransactionamount" placeholder = "transaction amount" style = "width:80% ;height:30px;margin-top:10px;"></input>
+                          <input type = "text" class = "form-control" id = "smallsafetransactionuser" placeholder = "handler" style = "width:80% ;height:30px;margin-top:10px;"></input>
+                          <input type = "text" class = "form-control" id = "smallsafetransactionto" placeholder = "reciever" style = "width:80% ;height:30px;margin-top:10px;"></input>
+                          <div type = "purpose" style = "width:80% ;height:30px;margin-top:10px;" id ="smallsafetransactionpurpose"></div>
                           <input type = "text" class = "form-control" id = "smallsafetransactiondescription" placeholder = "description" style = "width:80% ;height:30px;margin-top:10px;"></input>
                       </div>
                       <div class="modal-footer">
@@ -55,6 +68,9 @@
                       <div class="modal-body" >
                         <div id = "largesafeamount"></div>
                         <input type = "number" class = "form-control" id = "largesafetransactionamount" placeholder = "transaction amount" style = "width:80% ;height:30px;margin-top:10px;"></input>
+                        <input type = "text" class = "form-control" id = "largesafetransactionuser" placeholder = "handler" style = "width:80% ;height:30px;margin-top:10px;"></input>
+                        <input type = "text" class = "form-control" id = "largesafetransactionto" placeholder = "reciever" style = "width:80% ;height:30px;margin-top:10px;"></input>
+                        <div type = "purpose" style = "width:80% ;height:30px;margin-top:10px;" id = "largesafetransactionpurpose"></div>
                         <input type = "text" class = "form-control" id = "largesafetransactiondescription" placeholder = "description" style = "width:80% ;height:30px;margin-top:10px;"></input>
                       </div>
                       <div class="modal-footer">
@@ -64,15 +80,52 @@
                   </div>
               </div>
           </div>
-          <script>
-            let $ = require('jquery');
-            let jQuery = require('jquery');
-          </script>
-          <script src = "./../node_modules/jquery-ui-/jquery-ui.min.js"></script>
-          <script src="./../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-          <script> require("./../renderer/homewindow.js") </script>
+          <div id="nooftablesdialog" class="modal fade">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                          <h4 class="modal-title">no of tables</h4>
+                      </div>
+                      <div class="modal-body">
+                          <input type = "number" class = "form-control" id = "nooftables" placeholder = "nooftables" style = "width:80% ;height:30px;margin-top:10px;"></input>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          <button type = "button" class = "btn btn-default"  id = "nooftablessave">Save</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div id="purposedialog" class="modal fade">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                          <h4 class="modal-title">purpose</h4>
+                      </div>
+                      <div class="modal-body">
+                          <input type = "text" class = "form-control" id = "purposename" placeholder = "enter purpose" style = "width:80% ;height:30px;margin-top:10px;"></input>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                          <button type = "button" class = "btn btn-primary"  id = "purposeadd">Add</button>
+                          <button type = "button" class = "btn btn-primary"  id = "purposeremove">remove</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
           <link rel="stylesheet" href="./../node_modules/bootstrap/dist/css/bootstrap.min.css">
           <link rel="stylesheet" href="./../stylesheets/homewindow.css">
+          <link rel="stylesheet" href="./../node_modules/jqwidgets-framework/jqwidgets/styles/jqx.shinyblack.css">
 
-        <body>
+          <script> require("./../renderer/homewindow.js") </script>
+          <script src="./../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+          <script src="./../node_modules/jqwidgets-framework/jqwidgets/jqxcore.js"></script>
+          <script src="./../node_modules/jqwidgets-framework/jqwidgets/jqxbuttons.js"></script>
+          <script src="./../node_modules/jqwidgets-framework/jqwidgets/jqxscrollbar.js"></script>
+          <script src="./../node_modules/jqwidgets-framework/jqwidgets/jqxlistbox.js"></script>
+          <script src="./../node_modules/jqwidgets-framework/jqwidgets/jqxcombobox.js"></script>
+          <script type="text/javascript" src="./../node_modules/jqwidgets-framework/jqwidgets/jqxmenu.js"></script>
+        </body>
       </html>

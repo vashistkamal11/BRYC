@@ -5,7 +5,8 @@ const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 let win
 app.on('ready', ()=> {
-    win  = new BrowserWindow({width:1200, height:800})
+    win  = new BrowserWindow();
+    win.maximize();
     win.loadURL(`file://${__dirname}/view/homewindow.html`)
 })
 

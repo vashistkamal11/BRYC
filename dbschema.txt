@@ -5,3 +5,4 @@ mongo
    -dailysell
    -transactions
    -bills
+   -purpose // reason for which amount can be taken out of safes

@@ -22,7 +22,10 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "child_process": "^1.0.2",
     "jquery": "^3.2.1",
+    "jquery-ui": "^1.12.1",
+    "jqwidgets-framework": "^5.5.0",
     "mongojs": "^2.4.1"
   }
 }

@@ -25,3 +25,7 @@
   line-height: 1.33;
   border-radius: 35px;
 }
+.jqx-layout-group-auto-hide-content-vertical
+{
+    width: 200px;
+}
