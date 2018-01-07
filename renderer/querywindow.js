@@ -1,8 +1,16 @@
 const mongojs = require("mongojs")
+const transactionfunctions = require('./../transactions.js')
+
+$ = require('jquery');
+jQuery = require('jquery');
 
 let dbds = mongojs('127.0.0.1/dailysell',['dailysell'])
-
-document.getElementById('dailysellform').addEventListener('submit', (event)=>{
+$(document).ready(function(){
+$('#dailysellform').submit(dailysellquery);
+$('#transactionquery').submit(transactionqueryfunction);
+})
+//query functions
+var dailysellquery = (event)=>{
   event.preventDefault();
   let qdate = document.getElementById('dailysellform').elements[0].value;
   dbds.dailysell.find({date:""+qdate}, (err, records)=>{
@@ -15,6 +23,20 @@ document.getElementById('dailysellform').addEventListener('submit', (event)=>{
       return;
     }
     let table = document.getElementById('results');
+    table.innerHTML = "";
+    let tableheadings = document.createElement('tr');
+    let heading = document.createElement('th');
+    heading.innerHTML = "item name";
+    tableheadings.appendChild(heading);
+
+    heading = document.createElement('th');
+    heading.innerHTML = "quantity sold";
+    tableheadings.appendChild(heading);
+
+    heading = document.createElement('th');
+    heading.innerHTML = "Amount";
+    tableheadings.appendChild(heading);
+    table.appendChild(tableheadings);
     let total = 0;
     for (i in records[0]){
       console.log(i);
@@ -46,4 +68,86 @@ document.getElementById('dailysellform').addEventListener('submit', (event)=>{
   table.appendChild(th);
 document.body.appendChild(table);
   })
-})
+}
+
+var transactionqueryfunction = (e)=>{
+  e.preventDefault();
+  console.log(new Date());
+  let user = $('#transactionuser').val();
+  let type = $('#transactionsafetype').val();
+  let when = $('#transactiondate').val();
+  let purpose = $('#transactionpurpose').val();
+  let to = $('#transactionto').val();
+  transactionfunctions.queryTransaction(user , to , purpose,null ,type ,when , transactiontable );
+}
+
+var transactiontable = (records)=>{
+  let table = document.getElementById("results");
+  table.innerHTML ="";
+  let tableheadings = document.createElement('tr');
+
+  let heading = document.createElement('th');
+  heading.innerHTML = "user";
+  tableheadings.appendChild(heading);
+
+  heading = document.createElement('th');
+  heading.innerHTML = "reciever";
+  tableheadings.appendChild(heading);
+
+  heading = document.createElement('th');
+  heading.innerHTML = "safe type";
+  tableheadings.appendChild(heading);
+
+  heading = document.createElement('th');
+  heading.innerHTML = "Date";
+  tableheadings.appendChild(heading);
+
+  heading = document.createElement('th');
+  heading.innerHTML = "purpose";
+  tableheadings.appendChild(heading);
+
+  heading = document.createElement('th');
+  heading.innerHTML = "amount";
+  tableheadings.appendChild(heading);
+
+  heading = document.createElement('th');
+  heading.innerHTML = "description";
+  tableheadings.appendChild(heading);
+
+  table.appendChild(tableheadings);
+
+  for(let i =0;i<records.length;i++){
+    let newrow = document.createElement('tr');
+
+    let newcell = document.createElement('td');
+    newcell.innerHTML = records[i].user;
+    newrow.appendChild(newcell);
+
+    newcell = document.createElement('td');
+    newcell.innerHTML = records[i].to;
+    newrow.appendChild(newcell);
+
+    newcell = document.createElement('td');
+    newcell.innerHTML = records[i].type;
+    newrow.appendChild(newcell);
+
+    newcell = document.createElement('td');
+    newcell.innerHTML = records[i].when;
+    newrow.appendChild(newcell);
+
+    newcell = document.createElement('td');
+    newcell.innerHTML = records[i].purpose;
+    newrow.appendChild(newcell);
+
+    newcell = document.createElement('td');
+    newcell.innerHTML = records[i].amount;
+    newrow.appendChild(newcell);
+
+    newcell = document.createElement('td');
+    newcell.innerHTML = "-";
+    newcell.txt = records[i].description;
+    newrow.appendChild(newcell);
+    console.log(newcell.txt);
+    table.appendChild(newrow);
+  }
+}

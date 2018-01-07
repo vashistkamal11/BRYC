@@ -167,7 +167,7 @@ var largeSafeTransaction = ()=>{
   let user = document.getElementById("largesafetransactionuser").value;
   let to = document.getElementById("largesafetransactionto").value;
   let purpose = $("#largesafetransactionpurpose").val();
-  let transaction =  new transactionfunctions.TransactionBuilder(user , to , purpose , amount , description,"large");
+  let transaction =  new transactionfunctions.TransactionBuilder(user , to , purpose , amount , description, "large");
     dbparameters.parameters.update({"type":"largesafe"}, {$inc:{"amount" : parseInt(amount)}} ,{upsert:true}, (err,msg)=>{
 
       if(err){

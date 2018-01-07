@@ -156,7 +156,7 @@ function submitformfunction(event){
 
   var today = new Date();
 
-  exportbill.id = "bryc" + today.getDate() + today.getHours()+ today.getMonth() + today.getMinutes() + today.getFullYear() + today.getSeconds();
+  exportbill.id = "bryc" + today.getDate() + " " + today.getHours()+ " " +today.getMonth() + " " + today.getMinutes() + " " +today.getFullYear()+ " " + today.getSeconds();
   exportbill.customerName = document.getElementById('customername').value;
   exportbill.contactinfo = document.getElementById('contactno').value;
   exportbill.elements = elements;
@@ -199,7 +199,7 @@ function submitformfunction(event){
        newdailysell.totalsale = parseInt(newdailysell.totalsale) + parseInt(elements[i].price);
     }
     let transaction = {
-      "safetype" : "large",
+      "type" : "large",
       "amount" : document.getElementById("total").innerHTML,
       "description" : "from bill" + exportbill.id
     }
