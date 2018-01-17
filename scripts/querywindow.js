@@ -39,14 +39,12 @@ var dailysellquery = (event)=>{
     table.appendChild(tableheadings);
     let total = 0;
     for (i in records[0]){
-      console.log(i);
     if(i != "_id" && typeof(records[0][i]) == 'object' ){
         let tr = document.createElement('tr');
         let td1 = document.createElement('td');
         let td2 = document.createElement('td');
         let td3 = document.createElement('td');
         let obj = records[0][i];
-        console.log(obj)
         td1.innerHTML = i;
         td2.innerHTML = obj["quantity"];
         td3.innerHTML = obj["totalsold"];
@@ -56,18 +54,25 @@ var dailysellquery = (event)=>{
         table.appendChild(tr);
       }
     }
+   tableHeading("Total Sale" , table , records[0].totalsale);
+   tableHeading("Discount" , table , records[0].discount);
+   tableHeading("Total" , table , parseInt(records[0].totalsale) - parseInt(records[0].discount));
+
+document.body.appendChild(table);
+  })
+}
+
+var tableHeading = (title , table , value)=>{
   let th = document.createElement('tr');
   let td1 = document.createElement('th');
   let td2 = document.createElement('th');
   let td3 = document.createElement('th');
-  td1.innerHTML = "Total";
-  td3.innerHTML = records[0].totalsale;
+  td1.innerHTML = title;
+  td3.innerHTML = value;
   th.appendChild(td1);
   th.appendChild(td2);
   th.appendChild(td3);
   table.appendChild(th);
-document.body.appendChild(table);
-  })
 }
 
 var transactionqueryfunction = (e)=>{

@@ -52,6 +52,7 @@ function removeitemfrombill(event){
 function discount(event){
   let dis = document.getElementById('discount').value;
   let ttl = document.getElementById('total');
+  if(!(isNaN(parseInt(ttl.innerHTML) - parseInt(dis))))
   ttl.innerHTML = parseInt(ttl.innerHTML) - parseInt(dis);
 }
 // click function for tabs
@@ -171,7 +172,7 @@ function submitformfunction(event){
   let exporttodailysell = {};
   let newdailysell ={};
   let findflag=0;
-  dbds.dailysell.find({date:""+today.getDate()+today.getMonth()+today.getFullYear()}, (err, records)=>{
+  dbds.dailysell.find({date:""+today.getDate()+" "+today.getMonth()+" "+today.getFullYear()}, (err, records)=>{
     if(err){
       alert(err.message+"Error");
       return;
@@ -179,7 +180,7 @@ function submitformfunction(event){
     if(records.length==0){
       newdailysell ={}
       newdailysell.totalsale = 0;
-      newdailysell.date = (""+today.getDate()+today.getMonth()+today.getFullYear());
+      newdailysell.date = (""+today.getDate()+ " "+ today.getMonth()+" "+today.getFullYear());
     }
     else{
       findflag = 1;
@@ -198,13 +199,22 @@ function submitformfunction(event){
        }
        newdailysell.totalsale = parseInt(newdailysell.totalsale) + parseInt(elements[i].price);
     }
+    if(newdailysell.discount == null){
+      if(!(isNaN(parseInt(exportbill.discount))))
+      newdailysell.discount = parseInt(exportbill.discount);
+    }
+    else{
+      if(!(isNaN(parseInt(exportbill.discount))))
+      newdailysell.discount += parseInt(exportbill.discount);
+    }
+console.log(newdailysell);
     let transaction = {
-      "type" : "large",
+      "type" : "small",
       "amount" : document.getElementById("total").innerHTML,
       "description" : "from bill" + exportbill.id
     }
     if(findflag == 1){
-      dbds.dailysell.update({date:""+today.getDate()+today.getMonth()+today.getFullYear()}, newdailysell , (err,msg)=>{
+      dbds.dailysell.update({date:""+today.getDate()+" "+today.getMonth()+" "+today.getFullYear()}, newdailysell , (err,msg)=>{
         if(err){
           alert(err);
           return;
@@ -226,7 +236,7 @@ function submitformfunction(event){
 // insert in largesafe and transaction
 
 var addtosafe = (transaction)=>{
-  dbsafes.safes.update({"type":"large"} , {$inc : {"amount" : parseInt(document.getElementById("total").innerHTML)}} , {upsert:true} , (err,msg)=>{
+  dbsafes.safes.update({"type":"small"} , {$inc : {"amount" : parseInt(document.getElementById("total").innerHTML)}} , {upsert:true} , (err,msg)=>{
     if(err){
       alert(err);
       return;
