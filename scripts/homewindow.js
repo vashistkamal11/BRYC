@@ -10,8 +10,8 @@ const fs = remote.require('fs');
 const purposes = require('./../purposes.js')
 
 let bgchangetime = 5000;
-let filename = "/home/vashist/Desktop/bryc/BRYC/resources/2.jpeg";
-let imgpath = "/home/vashist/Desktop/bryc/BRYC/resources/";
+let filename = "./../resources/2.jpeg";
+let imgpath = "./../resources/";
 let imgno = 1;
 
 $ = require('jquery');
@@ -20,7 +20,6 @@ $(document).ready(function(){
   $("#options").jqxMenu({ width: '150', mode: 'vertical'});
 
   //$("#list").jqxComboBox({theme: "shinyblack" ,  source: source, width: 200, height: 15 ,});
-
   dbparameters = mongojs('127.0.0.1/parameters' , ['parameters']);
   dbparameters.parameters.find({"type" : "nooftables"} , (err,records)=>{
     if(err){
